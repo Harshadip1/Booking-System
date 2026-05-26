@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="dashboard-grid reveal">
+          <div class="glass-card stat-card"><div class="stat-value" id="stat-bookings">12,847</div><div class="stat-label">Total Bookings</div><div class="stat-change up">↑ 12.4% vs last month</div></div>
+          <div class="glass-card stat-card"><div class="stat-value" id="stat-revenue">$892K</div><div class="stat-label">Total Revenue</div><div class="stat-change up">↑ 8.7% vs last month</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">3,842</div><div class="stat-label">Active Customers</div><div class="stat-change up">↑ 156 new this week</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">4.7★</div><div class="stat-label">Average Rating</div><div class="stat-change up">↑ 0.2 from last quarter</div></div>
+        </div>
+        <div class="grid grid-2 reveal" style="margin-bottom:1.5rem">
+          <div class="glass-card chart-card"><h3>Revenue Trends</h3><div id="revenue-chart"></div></div>
+          <div class="glass-card chart-card"><h3>Booking Trends</h3><div id="bookings-chart"></div></div>
+        </div>
+        <div class="split-layout reveal">
+          <div>
+            <div class="glass-card" style="margin-bottom:1.5rem">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+                <h3>Upcoming Appointments</h3><a href="calendar.html" class="btn btn-ghost btn-sm">View All</a>
+              </div>
+              <div class="appt-list" id="upcoming-appts"></div>
+            </div>
+            <div class="glass-card">
+              <h3 style="margin-bottom:1rem">Recent Activity</h3>
+              <div class="activity-feed" id="activity-feed"></div>
+            </div>
+          </div>
+          <div>
+            <div class="glass-card" style="margin-bottom:1.5rem">
+              <h3 style="margin-bottom:1rem">Quick Actions</h3>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+                <a href="booking.html" class="btn btn-primary">+ New Booking</a>
+                <a href="customers.html" class="btn btn-secondary">Customers</a>
+                <a href="analytics.html" class="btn btn-secondary">Analytics</a>
+                <a href="video.html" class="btn btn-secondary">Video Call</a>
+              </div>
+            </div>
+            <div class="glass-card chart-card"><h3>Service Breakdown</h3><div id="services-pie"></div></div>
+            <div class="glass-card" style="margin-top:1.5rem">
+              <h3 style="margin-bottom:1rem">Waitlist <span class="badge badge-warning" id="waitlist-count">25</span></h3>
+              <div id="waitlist-preview"></div>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card reveal" style="margin-top:1.5rem">
+          <h3 style="margin-bottom:1rem">Team Schedules Today</h3>
+          <div class="team-grid" id="team-today"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/analytics.js"></script>
+  <script>
+    App.initAppLayout('Dashboard', 'Welcome back! Here\'s your booking overview.');
+    AnalyticsCharts.initDashboard();
+    const upcoming = DataStore.appointments.filter(a => a.date >= new Date().toISOString().split('T')[0] && a.status !== 'cancelled').sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time)).slice(0, 12);
+    document.getElementById('upcoming-appts').innerHTML = upcoming.map(a => `
+      <div class="appt-item glass-card" style="padding:0.75rem">
+        <div class="appt-color" style="background:${a.color}"></div>
+        <div class="appt-time">${a.time}</div>
+        <div style="flex:1"><strong>${a.serviceName}</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">${a.customerName} · ${a.staffName}</span></div>
+        ${App.getStatusBadge(a.status)}
+      </div>`).join('');
+    document.getElementById('activity-feed').innerHTML = DataStore.activityLogs.slice(0, 15).map(l => `
+      <div class="activity-item"><div class="avatar avatar-sm">${l.user[0]}</div><div><strong>${l.user}</strong> ${l.action}<div class="activity-time">${l.time}</div></div></div>`).join('');
+    document.getElementById('waitlist-preview').innerHTML = DataStore.waitlist.slice(0, 5).map(w => `
+      <div class="waitlist-item"><div><strong>${w.customer}</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">${w.service}</span></div>
+      <span class="badge badge-${w.priority === 'high' ? 'danger' : w.priority === 'medium' ? 'warning' : 'primary'}">${w.priority}</span></div>`).join('');
+    document.getElementById('team-today').innerHTML = DataStore.staff.slice(0, 8).map(s => {
+      const count = DataStore.appointments.filter(a => a.staffId === s.id && a.date === new Date().toISOString().split('T')[0]).length;
+      return `<div class="glass-card" style="padding:1rem;text-align:center"><div class="avatar" style="margin:0 auto 0.5rem">${s.avatar}</div><strong>${s.name.split(' ')[0]}</strong><p style="font-size:0.75rem;color:var(--text-secondary)">${count} appts today</p></div>`;
+    }).join('');
+  </script>
+</body>
+</html>

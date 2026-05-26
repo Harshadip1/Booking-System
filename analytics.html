@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="admin-stats reveal">
+          <div class="glass-card stat-card"><div class="stat-value">12,847</div><div class="stat-label">Total Appointments</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">$892K</div><div class="stat-label">Total Revenue</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">78%</div><div class="stat-label">Retention Rate</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">4.2%</div><div class="stat-label">Cancellation Rate</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">2.8%</div><div class="stat-label">No-Show Rate</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">4.7★</div><div class="stat-label">Avg Rating</div></div>
+        </div>
+        <div class="grid grid-2 reveal" style="margin-bottom:1.5rem">
+          <div class="glass-card chart-card"><h3>Monthly Revenue</h3><div id="revenue-chart"></div></div>
+          <div class="glass-card chart-card"><h3>Monthly Bookings</h3><div id="bookings-chart"></div></div>
+        </div>
+        <div class="grid grid-3 reveal" style="margin-bottom:1.5rem">
+          <div class="glass-card chart-card"><h3>Popular Services</h3><div id="services-pie"></div></div>
+          <div class="glass-card chart-card" style="text-align:center"><h3>Customer Retention</h3><div id="retention-chart"></div></div>
+          <div class="glass-card chart-card"><h3>Peak Booking Hours</h3><div id="peak-hours-chart"></div></div>
+        </div>
+        <div class="grid grid-2 reveal">
+          <div class="glass-card chart-card"><h3>Booking Heatmap</h3><div id="heatmap-chart"></div></div>
+          <div class="glass-card chart-card"><h3>Staff Performance</h3><div id="staff-performance"></div></div>
+        </div>
+        <div class="glass-card reveal" style="margin-top:1.5rem">
+          <h3 style="margin-bottom:1rem">Category Breakdown</h3>
+          <div class="grid grid-3" id="category-breakdown"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/analytics.js"></script>
+  <script>
+    App.initAppLayout('Analytics', 'Booking insights and performance metrics');
+    AnalyticsCharts.initDashboard();
+    document.getElementById('category-breakdown').innerHTML = DataStore.analytics.categories.map(c => `
+      <div style="text-align:center;padding:1rem"><div style="width:60px;height:60px;border-radius:50%;background:${c.color}33;border:3px solid ${c.color};display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-weight:800">${c.pct}%</div><strong>${c.name}</strong></div>`).join('');
+  </script>
+</body>
+</html>

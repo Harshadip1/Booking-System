@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="search-box reveal" style="max-width:600px;margin-bottom:1.5rem;padding:1rem">
+          <span>🔍</span><input type="text" id="search-input" placeholder="Search appointments, customers, services..." style="font-size:1rem">
+          <button class="btn btn-primary" id="search-btn">Search</button>
+        </div>
+        <p class="reveal" id="search-meta" style="color:var(--text-secondary);margin-bottom:1rem"></p>
+        <div class="tabs reveal"><button class="tab active" data-tab="all">All</button><button class="tab" data-tab="appointments">Appointments</button><button class="tab" data-tab="customers">Customers</button><button class="tab" data-tab="services">Services</button></div>
+        <div id="search-results" class="reveal"></div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Search', 'Find bookings, customers, and services');
+    let tab = 'all';
+    const qParam = new URLSearchParams(location.search).get('q') || '';
+    document.getElementById('search-input').value = qParam;
+    function search(q) {
+      q = q.toLowerCase();
+      const appts = DataStore.appointments.filter(a => a.serviceName.toLowerCase().includes(q) || a.customerName.toLowerCase().includes(q) || a.staffName.toLowerCase().includes(q)).slice(0, 30);
+      const custs = DataStore.customers.filter(c => c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q)).slice(0, 20);
+      const svcs = DataStore.services.filter(s => s.name.toLowerCase().includes(q)).slice(0, 10);
+      const total = appts.length + custs.length + svcs.length;
+      document.getElementById('search-meta').textContent = q ? `${total} results for "${q}"` : 'Enter a search term';
+      let html = '';
+      if ((tab === 'all' || tab === 'appointments') && appts.length) {
+        html += `<h3 style="margin:1rem 0">Appointments (${appts.length})</h3>`;
+        html += appts.map(a => `<div class="appt-item glass-card" style="padding:0.75rem;margin-bottom:0.5rem"><div class="appt-time">${a.date}</div><div style="flex:1"><strong>${a.serviceName}</strong> - ${a.customerName}</div>${App.getStatusBadge(a.status)}</div>`).join('');
+      }
+      if ((tab === 'all' || tab === 'customers') && custs.length) {
+        html += `<h3 style="margin:1rem 0">Customers (${custs.length})</h3>`;
+        html += custs.map(c => `<div class="glass-card" style="padding:0.75rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem"><div class="avatar">${c.avatar}</div><div><strong>${c.name}</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">${c.email}</span></div></div>`).join('');
+      }
+      if ((tab === 'all' || tab === 'services') && svcs.length) {
+        html += `<h3 style="margin:1rem 0">Services (${svcs.length})</h3>`;
+        html += svcs.map(s => `<div class="glass-card" style="padding:0.75rem;margin-bottom:0.5rem">${s.icon} <strong>${s.name}</strong> - ${App.formatCurrency(s.price)}</div>`).join('');
+      }
+      document.getElementById('search-results').innerHTML = html || '<div class="empty-state"><div class="icon">🔍</div><p>No results found</p></div>';
+    }
+    document.getElementById('search-btn').onclick = () => search(document.getElementById('search-input').value);
+    document.getElementById('search-input').onkeydown = e => { if (e.key === 'Enter') search(e.target.value); };
+    document.querySelectorAll('[data-tab]').forEach(t => t.addEventListener('click', () => { tab = t.dataset.tab; document.querySelectorAll('[data-tab]').forEach(x => x.classList.remove('active')); t.classList.add('active'); search(document.getElementById('search-input').value); }));
+    if (qParam) search(qParam);
+  </script>
+</body>
+</html>

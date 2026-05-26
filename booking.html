@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="booking-wizard reveal">
+          <div class="booking-steps">
+            <div class="booking-step active" data-step="1"><div class="step-circle">1</div><span class="booking-step-label">Service</span></div>
+            <div class="booking-step" data-step="2"><div class="step-circle">2</div><span class="booking-step-label">Staff</span></div>
+            <div class="booking-step" data-step="3"><div class="step-circle">3</div><span class="booking-step-label">Date & Time</span></div>
+            <div class="booking-step" data-step="4"><div class="step-circle">4</div><span class="booking-step-label">Confirm</span></div>
+          </div>
+          <div class="glass-card" style="padding:2rem;min-height:400px" id="booking-step-content"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:1.5rem">
+            <button class="btn btn-ghost" id="booking-prev" style="display:none">← Back</button>
+            <button class="btn btn-primary" id="booking-next" style="margin-left:auto">Continue →</button>
+          </div>
+        </div>
+        <div class="grid grid-3 reveal" style="margin-top:2rem">
+          <div class="glass-card"><h4>🎤 Voice Booking</h4><p style="font-size:0.875rem;color:var(--text-secondary);margin:0.5rem 0">Say "Book a haircut tomorrow at 2pm"</p><button class="btn btn-secondary btn-sm" onclick="App.toast('Voice booking activated','info')">Try Voice</button></div>
+          <div class="glass-card"><h4>📱 QR Check-in</h4><div class="qr-scanner" style="margin:1rem 0">📷</div><button class="btn btn-secondary btn-sm">Scan QR</button></div>
+          <div class="glass-card"><h4>⏳ Waitlist</h4><p style="font-size:0.875rem;color:var(--text-secondary)" id="waitlist-info">People waiting</p><button class="btn btn-secondary btn-sm" onclick="App.toast('Added to waitlist','success')">Join Waitlist</button></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/booking.js"></script>
+  <script>
+    App.initAppLayout('Book Appointment', 'Schedule a new appointment in 4 easy steps');
+    BookingWizard.init();
+    document.getElementById('waitlist-info').textContent = DataStore.waitlist.length + ' people waiting';
+  </script>
+</body>
+</html>

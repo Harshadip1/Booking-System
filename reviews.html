@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews & Ratings - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="dashboard-grid reveal" style="grid-template-columns:repeat(5,1fr)">
+          <div class="glass-card stat-card" style="text-align:center"><div class="stat-value">4.7</div><div class="stat-label">Avg Rating</div></div>
+          <div class="glass-card stat-card" style="text-align:center"><div class="stat-value">180</div><div class="stat-label">Total Reviews</div></div>
+          <div class="glass-card stat-card" style="text-align:center"><div class="stat-value">142</div><div class="stat-label">5-Star</div></div>
+          <div class="glass-card stat-card" style="text-align:center"><div class="stat-value">28</div><div class="stat-label">4-Star</div></div>
+          <div class="glass-card stat-card" style="text-align:center"><div class="stat-value">10</div><div class="stat-label">3-Star</div></div>
+        </div>
+        <div class="grid grid-3 reveal" id="reviews-grid" style="margin-top:1.5rem"></div>
+        <div id="reviews-pagination"></div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Reviews & Ratings', 'Customer feedback and analytics');
+    let page = 1;
+    function render() {
+      const { items, pages } = App.paginate(DataStore.reviews, page, 18);
+      document.getElementById('reviews-grid').innerHTML = items.map(r => `
+        <div class="testimonial-card glass-card">
+          <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+          <p class="quote">"${r.text}"</p>
+          <strong>${r.customerName}</strong><br>
+          <span style="font-size:0.75rem;color:var(--text-muted)">${r.serviceName} · ${r.staffName} · ${r.date}</span>
+        </div>`).join('');
+      App.renderPagination(document.getElementById('reviews-pagination'), pages, page, p => { page = p; render(); });
+    }
+    render();
+  </script>
+</body>
+</html>

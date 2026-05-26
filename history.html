@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment History - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="page-header reveal"><div><h2 class="page-title">Appointment History</h2><p class="page-subtitle" id="history-count"></p></div></div>
+        <div class="filters-bar reveal">
+          <select class="form-select" id="history-status" style="width:auto"><option value="all">All Status</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option><option value="no-show">No Show</option></select>
+          <input type="date" class="form-input" id="history-from" style="width:auto">
+          <input type="date" class="form-input" id="history-to" style="width:auto">
+        </div>
+        <div class="glass-card reveal"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Service</th><th>Customer</th><th>Staff</th><th>Status</th><th>Price</th><th></th></tr></thead><tbody id="history-table"></tbody></table></div>
+        <div id="history-pagination"></div></div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Appointment History', 'Past bookings and records');
+    let page = 1, statusFilter = 'all';
+    const past = DataStore.appointments.filter(a => a.date < new Date().toISOString().split('T')[0] || a.status === 'completed' || a.status === 'cancelled');
+    function render() {
+      let list = [...past];
+      if (statusFilter !== 'all') list = list.filter(a => a.status === statusFilter);
+      const { items, pages, total } = App.paginate(list, page, 25);
+      document.getElementById('history-count').textContent = total + ' historical appointments';
+      document.getElementById('history-table').innerHTML = items.map(a => `
+        <tr><td>${a.date}</td><td>${a.time}</td><td>${a.serviceName}</td><td>${a.customerName}</td><td>${a.staffName}</td><td>${App.getStatusBadge(a.status)}</td><td>${App.formatCurrency(a.price)}</td>
+        <td><a href="details.html?id=${a.id}" class="btn btn-ghost btn-sm">View</a></td></tr>`).join('');
+      App.renderPagination(document.getElementById('history-pagination'), pages, page, p => { page = p; render(); });
+    }
+    document.getElementById('history-status').addEventListener('change', e => { statusFilter = e.target.value; page = 1; render(); });
+    render();
+  </script>
+</body>
+</html>

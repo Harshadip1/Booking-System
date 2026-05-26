@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Consultation - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="incoming-call hidden" id="incoming-call">
+    <div class="avatar avatar-lg" style="width:100px;height:100px;font-size:3rem;margin:0 auto">SR</div>
+    <h2>Incoming Video Call</h2>
+    <p style="color:var(--text-secondary)">Dr. Sam Rivera · Follow-up Consult</p>
+    <div style="display:flex;gap:1rem">
+      <button class="video-btn danger" onclick="document.getElementById('incoming-call').classList.add('hidden')">✕</button>
+      <button class="video-btn" style="background:var(--success);width:64px;height:64px" onclick="document.getElementById('incoming-call').classList.add('hidden');App.toast('Call connected','success')">📞</button>
+    </div>
+  </div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="video-container reveal">
+          <div class="video-main">
+            <div class="main-feed">👤</div>
+            <div style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.6);padding:0.5rem 1rem;border-radius:var(--radius-md);font-size:0.875rem">
+              <span id="meeting-timer">00:00:00</span> · Follow-up Consultation
+            </div>
+            <div class="participant-grid" style="position:absolute;top:1rem;right:1rem;width:200px">
+              <div class="participant-tile">👤<span class="name">Client</span></div>
+              <div class="participant-tile">👤<span class="name">You</span></div>
+            </div>
+            <div class="video-controls">
+              <button class="video-btn default" id="mic-toggle" title="Microphone">🎤</button>
+              <button class="video-btn default" id="cam-toggle" title="Camera">📹</button>
+              <button class="video-btn default" title="Screen Share">🖥️</button>
+              <button class="video-btn default" title="Blur Background" onclick="App.toast('Background blur enabled','info')">🌫️</button>
+              <button class="video-btn danger" title="End Call">📞</button>
+            </div>
+          </div>
+          <div class="video-sidebar">
+            <div class="glass-card" style="flex:1;display:flex;flex-direction:column">
+              <h4 style="margin-bottom:0.75rem">Chat</h4>
+              <div class="chat-messages" id="chat-messages">
+                <div class="chat-msg"><div class="sender">Dr. Sam Rivera</div>Hello, how are you feeling today?</div>
+                <div class="chat-msg"><div class="sender">Client</div>Much better, thank you for the follow-up.</div>
+              </div>
+              <div style="display:flex;gap:0.5rem;padding-top:0.75rem;border-top:1px solid var(--border)">
+                <input class="form-input" id="chat-input" placeholder="Type a message...">
+                <button class="btn btn-primary btn-sm" onclick="sendChat()">Send</button>
+              </div>
+            </div>
+            <div class="glass-card">
+              <h4 style="margin-bottom:0.75rem">Upcoming Consultations</h4>
+              <div id="consult-list"></div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-secondary" style="margin-top:1rem" onclick="document.getElementById('incoming-call').classList.remove('hidden')">Simulate Incoming Call</button>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Video Consultation', 'Virtual meeting room');
+    let seconds = 0;
+    setInterval(() => { seconds++; const h=String(Math.floor(seconds/3600)).padStart(2,'0'); const m=String(Math.floor((seconds%3600)/60)).padStart(2,'0'); const s=String(seconds%60).padStart(2,'0'); document.getElementById('meeting-timer').textContent=`${h}:${m}:${s}`; }, 1000);
+    document.getElementById('mic-toggle').onclick = function() { this.classList.toggle('active'); App.toast(this.classList.contains('active') ? 'Mic on' : 'Mic muted', 'info'); };
+    document.getElementById('cam-toggle').onclick = function() { this.classList.toggle('active'); };
+    function sendChat() { const i=document.getElementById('chat-input'); if(!i.value.trim())return; document.getElementById('chat-messages').innerHTML+=`<div class="chat-msg"><div class="sender">You</div>${i.value}</div>`; i.value=''; }
+    document.getElementById('consult-list').innerHTML = DataStore.consultations.map(c => `
+      <div style="padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:0.8125rem"><strong>${c.title}</strong><br>${c.date} ${c.time} · ${c.participants} participants</div>`).join('');
+  </script>
+</body>
+</html>

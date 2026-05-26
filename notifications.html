@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="page-header reveal">
+          <div><h2 class="page-title">Notifications Center</h2><p class="page-subtitle">120 notifications · <span id="unread-count"></span> unread</p></div>
+          <button class="btn btn-secondary" id="mark-all-read">Mark All Read</button>
+        </div>
+        <div class="tabs reveal">
+          <button class="tab active" data-notif-filter="all">All</button>
+          <button class="tab" data-notif-filter="confirmation">Confirmations</button>
+          <button class="tab" data-notif-filter="reminder">Reminders</button>
+          <button class="tab" data-notif-filter="cancellation">Cancellations</button>
+          <button class="tab" data-notif-filter="payment">Payments</button>
+          <button class="tab" data-notif-filter="reschedule">Rescheduled</button>
+        </div>
+        <div class="split-layout reveal">
+          <div id="notif-list"></div>
+          <div>
+            <div class="glass-card"><h3 style="margin-bottom:1rem">Reminder Timeline</h3><div id="reminder-timeline"></div></div>
+            <div class="glass-card" style="margin-top:1.5rem">
+              <h3 style="margin-bottom:1rem">Smart Reminders</h3>
+              <div class="form-group"><label class="form-label">Email reminders</label><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
+              <div class="form-group"><label class="form-label">SMS reminders</label><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
+              <div class="form-group"><label class="form-label">Push notifications</label><div class="toggle" onclick="this.classList.toggle('active')"></div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/notifications.js"></script>
+  <script>
+    App.initAppLayout('Notifications', 'Booking alerts and reminders');
+    document.getElementById('unread-count').textContent = DataStore.notifications.filter(n => !n.read).length + ' unread';
+    NotificationCenter.init();
+  </script>
+</body>
+</html>

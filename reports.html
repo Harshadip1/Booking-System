@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports & Export - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="grid grid-3 reveal" style="margin-bottom:1.5rem">
+          <div class="glass-card" style="text-align:center;padding:2rem;cursor:pointer" onclick="downloadReport('bookings')">
+            <div style="font-size:2.5rem;margin-bottom:0.5rem">📊</div><h3>Booking Report</h3><p style="font-size:0.875rem;color:var(--text-secondary)">500 appointments</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:1rem">Download CSV</button>
+          </div>
+          <div class="glass-card" style="text-align:center;padding:2rem;cursor:pointer" onclick="downloadReport('revenue')">
+            <div style="font-size:2.5rem;margin-bottom:0.5rem">💰</div><h3>Revenue Report</h3><p style="font-size:0.875rem;color:var(--text-secondary)">Monthly breakdown</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:1rem">Download PDF</button>
+          </div>
+          <div class="glass-card" style="text-align:center;padding:2rem;cursor:pointer" onclick="downloadReport('customers')">
+            <div style="font-size:2.5rem;margin-bottom:0.5rem">👥</div><h3>Customer Report</h3><p style="font-size:0.875rem;color:var(--text-secondary)">250 customers</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:1rem">Export Data</button>
+          </div>
+        </div>
+        <div class="glass-card reveal" id="printable-report">
+          <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem">
+            <h3>Analytics Report Preview</h3>
+            <div><button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Print</button>
+            <button class="btn btn-primary btn-sm" onclick="App.toast('Report downloaded','success')">⬇️ Download</button></div>
+          </div>
+          <div class="grid grid-4" style="margin-bottom:1.5rem">
+            <div class="stat-card"><div class="stat-value">12,847</div><div class="stat-label">Appointments</div></div>
+            <div class="stat-card"><div class="stat-value">$892K</div><div class="stat-label">Revenue</div></div>
+            <div class="stat-card"><div class="stat-value">3,842</div><div class="stat-label">Customers</div></div>
+            <div class="stat-card"><div class="stat-value">4.7★</div><div class="stat-label">Rating</div></div>
+          </div>
+          <div id="report-chart"></div>
+        </div>
+        <div class="glass-card reveal" style="margin-top:1.5rem">
+          <h3 style="margin-bottom:1rem">Invoice Templates</h3>
+          <div class="grid grid-2" id="invoice-list"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/analytics.js"></script>
+  <script>
+    App.initAppLayout('Reports & Export', 'Download and export booking data');
+    function downloadReport(type) { App.toast(`Downloading ${type} report...`, 'success'); }
+    AnalyticsCharts.renderBarChart('report-chart', DataStore.analytics.monthlyRevenue, ['J','F','M','A','M','J','J','A','S','O','N','D']);
+    document.getElementById('invoice-list').innerHTML = DataStore.payments.slice(0, 6).map(p => `
+      <div style="padding:1rem;border:1px solid var(--border);border-radius:var(--radius-md)">
+        <strong>${p.invoice}</strong><br><span style="font-size:0.875rem;color:var(--text-secondary)">${p.customer} · ${App.formatCurrency(p.amount)}</span>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="App.toast('PDF generated','success')">Download PDF</button>
+      </div>`).join('');
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Plans - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div style="text-align:center;margin-bottom:2rem" class="reveal">
+          <h2 class="page-title">Subscription Plans</h2>
+          <p class="page-subtitle">Choose the perfect plan for your business</p>
+        </div>
+        <div class="grid grid-4 reveal" id="plans-grid"></div>
+        <div class="glass-card reveal" style="margin-top:2rem;text-align:center;padding:2rem">
+          <h3>Current Plan: Professional</h3>
+          <p style="color:var(--text-secondary);margin:0.5rem 0">Renews on June 26, 2026 · $29/month</p>
+          <button class="btn btn-secondary" onclick="App.toast('Billing portal opened','info')">Manage Billing</button>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Subscription Plans', 'Pricing and plan management');
+    document.getElementById('plans-grid').innerHTML = DataStore.plans.map(p => `
+      <div class="pricing-card glass-card ${p.popular ? 'featured' : ''}">
+        ${p.popular ? '<span class="badge badge-primary">Most Popular</span>' : ''}
+        <h3>${p.name}</h3><div class="price">$${p.price}<span>/month</span></div>
+        <ul class="pricing-features">${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
+        <button class="btn ${p.popular ? 'btn-primary' : 'btn-secondary'}" style="width:100%" onclick="App.toast('Plan selected: ${p.name}','success')">${p.price === 0 ? 'Get Started' : 'Upgrade'}</button>
+      </div>`).join('');
+  </script>
+</body>
+</html>

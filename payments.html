@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="grid grid-3 reveal" style="margin-bottom:1.5rem">
+          <div class="glass-card stat-card"><div class="stat-value">$24,580</div><div class="stat-label">This Month</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">150</div><div class="stat-label">Transactions</div></div>
+          <div class="glass-card stat-card"><div class="stat-value">98.2%</div><div class="stat-label">Success Rate</div></div>
+        </div>
+        <div class="split-layout reveal">
+          <div>
+            <div class="glass-card" style="margin-bottom:1.5rem">
+              <h3 style="margin-bottom:1rem">Payment Method</h3>
+              <div class="payment-methods" id="payment-methods">
+                <div class="payment-method glass-card selected" data-method="card"><div class="pm-icon">💳</div>Credit Card</div>
+                <div class="payment-method glass-card" data-method="upi"><div class="pm-icon">📱</div>UPI</div>
+                <div class="payment-method glass-card" data-method="paypal"><div class="pm-icon">🅿️</div>PayPal</div>
+                <div class="payment-method glass-card" data-method="wallet"><div class="pm-icon">👛</div>Wallet</div>
+              </div>
+              <div class="card-preview"><div>•••• •••• •••• 4242</div><div style="display:flex;justify-content:space-between;margin-top:2rem"><span>DEMO USER</span><span>12/28</span></div></div>
+              <div class="form-group"><label class="form-label">Card Number</label><input class="form-input" value="4242 4242 4242 4242" readonly></div>
+              <div class="grid grid-2"><div class="form-group"><label class="form-label">Expiry</label><input class="form-input" value="12/28"></div>
+              <div class="form-group"><label class="form-label">CVV</label><input class="form-input" value="•••" type="password"></div></div>
+              <button class="btn btn-primary" style="width:100%;margin-top:1rem" onclick="App.toast('Payment processed successfully','success')">Pay $85.00</button>
+            </div>
+          </div>
+          <div>
+            <div class="glass-card" style="margin-bottom:1.5rem">
+              <h3 style="margin-bottom:1rem">Billing History</h3>
+              <div id="billing-history"></div>
+            </div>
+            <div class="glass-card">
+              <h3 style="margin-bottom:1rem">Invoice Preview</h3>
+              <div style="padding:1.5rem;border:1px dashed var(--border);border-radius:var(--radius-md)">
+                <div style="display:flex;justify-content:space-between;margin-bottom:1rem"><strong>INVOICE #INV-10482</strong><span class="badge badge-success">Paid</span></div>
+                <p style="font-size:0.875rem;color:var(--text-secondary)">General Consultation · May 20, 2026</p>
+                <div style="border-top:1px solid var(--border);margin:1rem 0;padding-top:1rem;display:flex;justify-content:space-between"><strong>Total</strong><strong>$85.00</strong></div>
+                <button class="btn btn-ghost btn-sm" style="width:100%">Download PDF</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card reveal" style="margin-top:1.5rem">
+          <h3 style="margin-bottom:1rem">All Transactions</h3>
+          <div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead><tbody id="payments-table"></tbody></table></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Payments', 'Billing and payment management (UI demo)');
+    document.querySelectorAll('.payment-method').forEach(m => m.addEventListener('click', () => {
+      document.querySelectorAll('.payment-method').forEach(x => x.classList.remove('selected'));
+      m.classList.add('selected');
+    }));
+    document.getElementById('billing-history').innerHTML = DataStore.payments.slice(0, 8).map(p => `
+      <div style="display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid var(--border)">
+        <div><strong>${p.invoice}</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">${p.customer}</span></div>
+        <div style="text-align:right"><strong>${App.formatCurrency(p.amount)}</strong><br><span class="badge badge-${p.status === 'completed' ? 'success' : 'warning'}">${p.status}</span></div>
+      </div>`).join('');
+    document.getElementById('payments-table').innerHTML = DataStore.payments.map(p => `
+      <tr><td>${p.invoice}</td><td>${p.customer}</td><td>${App.formatCurrency(p.amount)}</td><td>${p.method}</td><td>${App.getStatusBadge(p.status)}</td><td>${p.date}</td></tr>`).join('');
+  </script>
+</body>
+</html>

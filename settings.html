@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="split-layout reveal">
+          <div class="glass-card">
+            <h3 style="margin-bottom:1.5rem">General Settings</h3>
+            <div class="form-group"><label class="form-label">Business Name</label><input class="form-input" value="ScheduleHub Demo"></div>
+            <div class="form-group"><label class="form-label">Timezone</label><select class="form-select"><option>UTC-05:00 Eastern</option><option>UTC-08:00 Pacific</option><option>UTC+00:00 GMT</option></select></div>
+            <div class="form-group"><label class="form-label">Default Appointment Duration</label><select class="form-select"><option>30 minutes</option><option>45 minutes</option><option>60 minutes</option></select></div>
+            <div class="form-group" style="display:flex;justify-content:space-between;align-items:center"><label class="form-label" style="margin:0">Dark Mode</label><div class="toggle active" id="settings-theme-toggle"></div></div>
+            <div class="form-group" style="display:flex;justify-content:space-between;align-items:center"><label class="form-label" style="margin:0">Offline Mode</label><div class="toggle" id="offline-toggle"></div></div>
+            <button class="btn btn-primary" onclick="App.toast('Settings saved','success')">Save Changes</button>
+          </div>
+          <div>
+            <div class="glass-card" style="margin-bottom:1.5rem">
+              <h3 style="margin-bottom:1rem">Language</h3>
+              <select class="form-select" id="settings-lang"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option></select>
+            </div>
+            <div class="glass-card" style="margin-bottom:1.5rem">
+              <h3 style="margin-bottom:1rem">Keyboard Shortcuts</h3>
+              <p style="font-size:0.875rem;margin-bottom:0.5rem"><span class="kbd">Ctrl</span> + <span class="kbd">K</span> Search</p>
+              <p style="font-size:0.875rem;margin-bottom:0.5rem"><span class="kbd">Ctrl</span> + <span class="kbd">B</span> New Booking</p>
+              <p style="font-size:0.875rem;margin-bottom:0.5rem"><span class="kbd">Ctrl</span> + <span class="kbd">D</span> Dashboard</p>
+              <p style="font-size:0.875rem"><span class="kbd">Ctrl</span> + <span class="kbd">C</span> Calendar</p>
+            </div>
+            <div class="glass-card">
+              <h3 style="margin-bottom:1rem">Automated Workflows</h3>
+              <div class="workflow-step active"><span>📧</span><div><strong>Send confirmation email</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">On new booking</span></div></div>
+              <div class="workflow-step active"><span>🔔</span><div><strong>24hr reminder</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">Before appointment</span></div></div>
+              <div class="workflow-step"><span>⭐</span><div><strong>Request review</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">After completion</span></div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Settings', 'Configure your booking platform');
+    document.getElementById('settings-theme-toggle').addEventListener('click', function() { this.classList.toggle('active'); ThemeManager.toggle(); });
+    document.getElementById('offline-toggle').addEventListener('click', function() { this.classList.toggle('active'); App.toast(this.classList.contains('active') ? 'Offline mode enabled' : 'Offline mode disabled', 'info'); });
+  </script>
+</body>
+</html>

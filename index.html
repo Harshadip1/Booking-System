@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScheduleHub - Premium Appointment Booking Platform</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-page="landing">
+  <div class="particles"></div>
+  <nav class="landing-nav">
+    <a href="index.html" class="nav-logo">ScheduleHub</a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div style="display:flex;gap:0.75rem;align-items:center">
+      <button class="btn btn-ghost btn-sm" id="theme-toggle-landing">🌙</button>
+      <a href="dashboard.html" class="btn btn-ghost">Sign In</a>
+      <a href="booking.html" class="btn btn-primary">Book Now</a>
+    </div>
+  </nav>
+
+  <section class="hero page-wrapper" style="display:flex;gap:4rem;max-width:1200px;margin:0 auto;flex-wrap:wrap">
+    <div class="hero-content reveal">
+      <h1>Schedule Smarter with <span>ScheduleHub</span></h1>
+      <p>The all-in-one appointment booking platform for modern businesses. Manage calendars, teams, payments, and analytics in one beautiful dashboard.</p>
+      <div class="hero-buttons">
+        <a href="booking.html" class="btn btn-primary btn-lg">Start Booking Free</a>
+        <a href="dashboard.html" class="btn btn-secondary btn-lg">View Demo Dashboard</a>
+      </div>
+      <div style="display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap">
+        <div><strong style="font-size:1.5rem">12,847+</strong><br><span style="color:var(--text-secondary);font-size:0.875rem">Appointments</span></div>
+        <div><strong style="font-size:1.5rem">3,842</strong><br><span style="color:var(--text-secondary);font-size:0.875rem">Active Users</span></div>
+        <div><strong style="font-size:1.5rem">4.9★</strong><br><span style="color:var(--text-secondary);font-size:0.875rem">Avg Rating</span></div>
+      </div>
+    </div>
+    <div class="hero-preview reveal">
+      <div class="hero-card glass" style="padding:1.5rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:1rem"><strong>Today's Schedule</strong><span class="badge badge-success">Live</span></div>
+        <div id="hero-bookings"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="features">
+    <h2 class="section-title">Powerful Features</h2>
+    <p class="section-subtitle">Everything you need to run a world-class booking operation</p>
+    <div class="grid grid-3">
+      <div class="glass-card"><div class="feature-icon">📅</div><h3>Smart Calendar</h3><p>Monthly, weekly, and daily views with drag-and-drop scheduling</p></div>
+      <div class="glass-card"><div class="feature-icon">🤖</div><h3>AI Assistant</h3><p>Intelligent booking recommendations and voice scheduling</p></div>
+      <div class="glass-card"><div class="feature-icon">📊</div><h3>Analytics</h3><p>Revenue trends, heatmaps, and staff performance insights</p></div>
+      <div class="glass-card"><div class="feature-icon">🔔</div><h3>Notifications</h3><p>Automated reminders, confirmations, and payment alerts</p></div>
+      <div class="glass-card"><div class="feature-icon">📹</div><h3>Video Consults</h3><p>Built-in video meetings with chat and screen sharing</p></div>
+      <div class="glass-card"><div class="feature-icon">💳</div><h3>Payments</h3><p>Accept cards, UPI, PayPal, and subscription billing</p></div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="services">
+    <h2 class="section-title">Service Categories</h2>
+    <p class="section-subtitle">Support every type of appointment your business offers</p>
+    <div class="grid grid-3" id="hero-services"></div>
+  </section>
+
+  <section class="section reveal">
+    <h2 class="section-title">What Clients Say</h2>
+    <div class="grid grid-3" id="hero-testimonials"></div>
+  </section>
+
+  <section class="section reveal" id="pricing">
+    <h2 class="section-title">Simple Pricing</h2>
+    <p class="section-subtitle">Choose the plan that fits your business</p>
+    <div class="grid grid-4" id="hero-pricing"></div>
+  </section>
+
+  <section class="section reveal" style="text-align:center">
+    <h2 class="section-title">Ready to Get Started?</h2>
+    <p class="section-subtitle">Join thousands of businesses scheduling smarter</p>
+    <a href="booking.html" class="btn btn-primary btn-lg">Create Your First Booking</a>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div><div class="nav-logo" style="margin-bottom:1rem">ScheduleHub</div><p style="color:var(--text-secondary);font-size:0.875rem">Premium appointment booking & scheduling platform.</p></div>
+      <div><h4 style="margin-bottom:1rem">Product</h4><ul style="list-style:none"><li><a href="dashboard.html" style="color:var(--text-secondary);font-size:0.875rem">Dashboard</a></li><li><a href="calendar.html">Calendar</a></li><li><a href="analytics.html">Analytics</a></li></ul></div>
+      <div><h4 style="margin-bottom:1rem">Company</h4><ul style="list-style:none"><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="plans.html">Plans</a></li></ul></div>
+      <div><h4 style="margin-bottom:1rem">Legal</h4><ul style="list-style:none"><li><a href="security.html">Security</a></li><li><a href="settings.html">Settings</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2026 ScheduleHub. Demo application for educational purposes.</div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initParticles();
+    document.getElementById('theme-toggle-landing')?.addEventListener('click', () => ThemeManager.toggle());
+    const today = new Date().toISOString().split('T')[0];
+    const todayAppts = DataStore.appointments.filter(a => a.date === today).slice(0, 5);
+    document.getElementById('hero-bookings').innerHTML = (todayAppts.length ? todayAppts : DataStore.appointments.slice(0, 5)).map(a => `
+      <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--accent);font-weight:600;font-size:0.8125rem">${a.time}</span>
+        <span style="font-size:0.875rem">${a.serviceName}</span>
+        <span class="badge badge-success" style="margin-left:auto;font-size:0.625rem">${a.status}</span>
+      </div>`).join('');
+    document.getElementById('hero-services').innerHTML = [
+      { icon: '🏥', name: 'Medical', count: 3420 },
+      { icon: '✂️', name: 'Salon', count: 2890 },
+      { icon: '💪', name: 'Fitness', count: 2150 },
+      { icon: '💼', name: 'Business', count: 1890 },
+      { icon: '📹', name: 'Consultation', count: 1560 },
+      { icon: '🎯', name: 'Coaching', count: 937 }
+    ].map(s => `<div class="glass-card" style="text-align:center"><div style="font-size:2.5rem">${s.icon}</div><h3>${s.name}</h3><p style="color:var(--text-secondary)">${s.count.toLocaleString()} bookings</p></div>`).join('');
+    document.getElementById('hero-testimonials').innerHTML = DataStore.reviews.slice(0, 6).map(r => `
+      <div class="testimonial-card glass-card"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+      <p class="quote">"${r.text}"</p><strong>${r.customerName}</strong><br><span style="font-size:0.75rem;color:var(--text-muted)">${r.serviceName}</span></div>`).join('');
+    document.getElementById('hero-pricing').innerHTML = DataStore.plans.map(p => `
+      <div class="pricing-card glass-card ${p.popular ? 'featured' : ''}">
+        ${p.popular ? '<span class="badge badge-primary">Popular</span>' : ''}
+        <h3>${p.name}</h3><div class="price">$${p.price}<span>/mo</span></div>
+        <ul class="pricing-features">${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
+        <a href="plans.html" class="btn ${p.popular ? 'btn-primary' : 'btn-secondary'}" style="width:100%">Get Started</a>
+      </div>`).join('');
+  </script>
+</body>
+</html>

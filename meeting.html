@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meeting Scheduler - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="split-layout reveal">
+          <div class="glass-card">
+            <h3 style="margin-bottom:1rem">Schedule a Meeting</h3>
+            <div class="form-group"><label class="form-label">Meeting Title</label><input class="form-input" placeholder="Team standup"></div>
+            <div class="form-group"><label class="form-label">Attendees</label><select class="form-select" multiple style="height:100px" id="attendees-select"></select></div>
+            <div class="grid grid-2">
+              <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date"></div>
+              <div class="form-group"><label class="form-label">Time</label><input class="form-input" type="time" value="10:00"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Duration</label><select class="form-select"><option>30 min</option><option>60 min</option><option>90 min</option></select></div>
+            <div class="form-group"><label class="form-label">Location</label><select class="form-select"><option>Video Call</option><option>Conference Room A</option><option>Conference Room B</option></select></div>
+            <button class="btn btn-primary" onclick="App.toast('Meeting scheduled','success')">Schedule Meeting</button>
+          </div>
+          <div>
+            <div class="glass-card" style="margin-bottom:1.5rem"><h3 style="margin-bottom:1rem">Smart Recommendations</h3>
+              <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem">AI-suggested optimal meeting times</p>
+              <div id="smart-slots"></div>
+            </div>
+            <div class="glass-card"><h3 style="margin-bottom:1rem">Upcoming Meetings</h3><div id="meetings-list"></div></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script>
+    App.initAppLayout('Meeting Scheduler', 'Schedule team meetings and events');
+    document.getElementById('attendees-select').innerHTML = DataStore.staff.map(s => `<option>${s.name}</option>`).join('');
+    document.getElementById('smart-slots').innerHTML = ['Tue 10:00 AM - All attendees free','Wed 2:00 PM - Low conflict','Thu 9:00 AM - Optimal productivity'].map(s => `
+      <div class="glass-card" style="padding:0.75rem;margin-bottom:0.5rem;cursor:pointer" onclick="App.toast('Slot selected','success')">🤖 ${s}</div>`).join('');
+    document.getElementById('meetings-list').innerHTML = DataStore.appointments.filter(a => a.category === 'business').slice(0, 12).map(a => `
+      <div style="padding:0.75rem 0;border-bottom:1px solid var(--border)"><strong>${a.serviceName}</strong><br><span style="font-size:0.75rem;color:var(--text-secondary)">${a.date} ${a.time} · ${a.staffName}</span></div>`).join('');
+  </script>
+</body>
+</html>

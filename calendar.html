@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar - ScheduleHub</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/calendar.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout page-wrapper">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="top-header" id="top-header"></header>
+      <main class="page-content">
+        <div class="calendar-toolbar reveal">
+          <div class="calendar-nav">
+            <button id="cal-prev">‹</button>
+            <button class="btn btn-ghost btn-sm" id="cal-today">Today</button>
+            <button id="cal-next">›</button>
+            <h2 class="calendar-title" id="cal-title"></h2>
+          </div>
+          <div class="view-switcher">
+            <button class="view-btn active" data-view="month">Month</button>
+            <button class="view-btn" data-view="week">Week</button>
+            <button class="view-btn" data-view="day">Day</button>
+          </div>
+          <a href="booking.html" class="btn btn-primary">+ New Appointment</a>
+        </div>
+        <div class="split-layout reveal">
+          <div class="calendar-view-container" id="calendar-view"></div>
+          <div class="calendar-sidebar">
+            <div class="glass-card" id="day-detail" style="margin-bottom:1.5rem"></div>
+            <div class="glass-card">
+              <h4 style="margin-bottom:1rem">Categories</h4>
+              <div class="legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#EF4444"></span>Medical</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#EC4899"></span>Salon</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#22C55E"></span>Fitness</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#3B82F6"></span>Business</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#7C3AED"></span>Consultation</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>Coaching</div>
+              </div>
+            </div>
+            <div class="glass-card" style="margin-top:1.5rem">
+              <h4 style="margin-bottom:0.75rem">Stats</h4>
+              <p style="font-size:0.875rem;color:var(--text-secondary)">Total appointments: <strong style="color:var(--text-primary)">500</strong></p>
+              <p style="font-size:0.875rem;color:var(--text-secondary);margin-top:0.5rem">This month: <strong style="color:var(--accent)">131</strong></p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="drag-overlay" id="drag-overlay"></div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/calendar.js"></script>
+  <script>
+    App.initAppLayout('Calendar', `${DataStore.appointments.length} appointments scheduled`);
+    CalendarApp.init();
+  </script>
+</body>
+</html>
